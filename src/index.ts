@@ -25,7 +25,7 @@ let daftarKayu: Kayu[] = [
 ];
 
 // ============================================================================
-// BAGIAN 2: KERANGKA FUNGSI BERTIPE (Akan dilengkapi bersama tim)
+// BAGIAN 2: KERANGKA FUNGSI BERTIPE (Oleh: Muhammad Naufal Adiputra)
 // ============================================================================
 
 // Fungsi untuk menampilkan daftar opsi menu utama ke layar terminal (void)
@@ -42,6 +42,57 @@ function tampilkanDaftarMenu(): void {
     console.log("7. Transaksi Kasir Penjualan");
     console.log("0. Keluar Aplikasi");
     console.log("==================================================");
+}
+
+// Fungsi modular untuk menampilkan seluruh katalog kayu dalam bentuk tabel (void)
+function tampilkanSemuaKatalog(data: Kayu[]): void {
+    console.log("\n---------------------------------------------------------------------");
+    console.log("ID     | Jenis Kayu      | Grade | Harga Satuan   | Stok | Status");
+    console.log("---------------------------------------------------------------------");
+    for (const item of data) {
+        const statusText = item.tersedia ? "Tersedia" : "Habis";
+        console.log(
+            `${item.id.padEnd(6)} | ${item.jenis.padEnd(15)} | ${item.grade.padEnd(5)} | Rp ${item.hargaSatuan.toLocaleString("id-ID").padEnd(11)} | ${String(item.stok).padEnd(4)} | ${statusText}`
+        );
+    }
+    console.log("---------------------------------------------------------------------");
+}
+
+// Fungsi modular untuk mencari data kayu berdasarkan ID (mengembalikan Kayu atau undefined)
+function cariKayuById(data: Kayu[], idCari: string): Kayu | undefined {
+    return data.find((item: Kayu) => item.id.toLowerCase() === idCari.trim().toLowerCase());
+}
+
+// Fungsi modular untuk menghitung total nilai aset stok gudang (mengembalikan number)
+function hitungTotalAsetGudang(data: Kayu[]): number {
+    let totalAset: number = 0;
+    for (const item of data) {
+        totalAset += item.hargaSatuan * item.stok;
+    }
+    return totalAset;
+}
+
+// Kerangka fungsi CRUD & Search bertipe (siap diisi penuh pada Progress 3-6)
+function tambahVarianKayu(data: Kayu[], kayuBaru: Kayu): boolean {
+    const duplikat = cariKayuById(data, kayuBaru.id);
+    if (duplikat) return false;
+    data.push(kayuBaru);
+    return true;
+}
+
+function perbaruiStokKayu(data: Kayu[], idTarget: string, tambahanStok: number): boolean {
+    const target = cariKayuById(data, idTarget);
+    if (!target || tambahanStok <= 0) return false;
+    target.stok += tambahanStok;
+    target.tersedia = target.stok > 0;
+    return true;
+}
+
+function hapusKayuById(data: Kayu[], idTarget: string): boolean {
+    const index = data.findIndex((item: Kayu) => item.id.toLowerCase() === idTarget.trim().toLowerCase());
+    if (index === -1) return false;
+    data.splice(index, 1);
+    return true;
 }
 
 // ============================================================================
