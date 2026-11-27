@@ -53,7 +53,7 @@ function tampilkanKatalogKayu(data: Kayu[]): void {
   }
 
   for (let i: number = 0; i < data.length; i++) {
-    const item: Kayu = data[i];
+    const item: Kayu = data[i]!;
     const statusTeks: string = item.tersedia ? "Tersedia" : "Habis";
     console.log(
       `${i + 1}. [${item.id}] ${item.jenis} | Grade ${item.grade} | Rp${item.hargaSatuan.toLocaleString("id-ID")} | Stok: ${item.stok} (${statusTeks})`
